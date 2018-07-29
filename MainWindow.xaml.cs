@@ -23,6 +23,8 @@ namespace LedCubeApp
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = new WindowViewModel(this);
         }
     }
 }
