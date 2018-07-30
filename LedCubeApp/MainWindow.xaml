@@ -1,0 +1,129 @@
+﻿<Window x:Class="LedCubeApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LedCubeApp"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        x:Name="AppWindow"
+        WindowStartupLocation="CenterScreen"
+        Icon="Images/Logo/LEDCubeIcon.png"
+        mc:Ignorable="d"
+        MinHeight="{Binding WindowMinimumHeight}" MinWidth="{Binding WindowMinimumWidth}"
+        Title="LED Cube Application" Height="600" Width="900">
+    <Window.Resources>
+        <Style TargetType="{x:Type local:MainWindow}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+                        <!--Outer border with the dropshadow margin-->
+                        <Border Padding="{Binding OuterMarginSizeThickness, FallbackValue=10}">
+                            <!--Main Window Outline-->
+                            <Grid>
+                                <!--Opacity mask for corners on grid-->
+                                <Border x:Name="Container"
+                                        Background="{StaticResource BackgroundLightBrush}"
+                                        CornerRadius="{Binding WindowCornerRadius,FallbackValue=10}"/>
+                                <!--Main Border/Invisible outer Border-->
+                                <Border CornerRadius="{Binding WindowCornerRadius}"
+                                        Background="{StaticResource BackgroundLightBrush}">
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="0.5"
+                                                          Opacity="0.4"
+                                                          BlurRadius="10"
+                                                          />
+                                    </Border.Effect>
+                                </Border>
+                                
+                                <!--Main Window-->
+                                <Grid>
+                                    <!--Corner clipping-->
+                                    <Grid.OpacityMask>
+                                        <VisualBrush Visual="{Binding ElementName=Container}"/>
+                                    </Grid.OpacityMask>
+                                    
+                                    <Grid.RowDefinitions>
+                                        <!--Title Bar-->
+                                        <RowDefinition Height="{Binding TitleHeightGridLength, FallbackValue=42}"/>
+                                        <!--Drop Shadow-->
+                                        <RowDefinition Height="auto"/>
+                                        <!--Window Content-->
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <!--Title Bar-->
+                                    <Grid Grid.Column="0" Panel.ZIndex="1">
+                                        <Grid.ColumnDefinitions>
+                                            <!--Icon-->
+                                            <ColumnDefinition Width="auto"/>
+                                            <!--Title-->
+                                            <ColumnDefinition Width="*"/>
+                                            <!--Window Buttons-->
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!--Icon-->
+                                        <Button Style="{StaticResource SystemIconButton}" 
+                                                Command="{Binding MenuCommand}">
+                                            <Image Source="/Images/Logo/LedCubeIcon.png"/>
+                                        </Button>
+                                        <!--Title-->
+                                        <Viewbox Grid.Column="1" Margin="0">
+                                            <TextBlock Style="{StaticResource HeaderText}" Text="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Title, FallbackValue='LED Cube Application'}" />
+                                        </Viewbox>
+                                        <!--Window buttons-->
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                            <!--Minimize button-->
+                                            <Button Style="{StaticResource WindowControlButton}" 
+                                                    Content="{StaticResource FontAwesomeWindowMinimize}"
+                                                    Command="{Binding MinimizeCommand}"/>
+                                            <!--Maximize button-->
+                                            <Button Style="{StaticResource WindowControlButton}"
+                                                    Content="{StaticResource FontAwesomeWindowRestore}"
+                                                    Command="{Binding MaximizeCommand}"/>
+                                            <!--Close button-->
+                                            <Button Style="{StaticResource WindowControlButton}"
+                                                    Content="{StaticResource FontAwesomeWindowClose}"
+                                                    Command="{Binding CloseCommand}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <!--Title bar underlining drop shadow-->
+                                    <Border Grid.Row="1" Height="0.2" BorderThickness="0 0.2 0 0">
+                                        <Border.BorderBrush>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                <GradientStop Color="{StaticResource BackgroundLight}" Offset="0.0"/>
+                                                <GradientStop Color="{StaticResource ForegroundDark}" Offset="0.5"/>
+                                                <GradientStop Color="{StaticResource BackgroundLight}" Offset="1.0"/>
+                                            </LinearGradientBrush>
+                                        </Border.BorderBrush>
+                                    </Border>
+                                    
+                                    <!--Main Window Page content-->
+                                    <Border Grid.Row="2" Padding="{Binding InnerContentPadding}">
+                                        <ContentPresenter Content="{TemplateBinding Content}"/>
+                                    </Border>
+
+
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <WindowChrome.WindowChrome>
+        <WindowChrome 
+            ResizeBorderThickness="{Binding ResizeBorderThickness}"
+            CaptionHeight="{Binding TitleHeight}"
+            GlassFrameThickness="0"
+            CornerRadius="0"
+            />
+    </WindowChrome.WindowChrome>
+
+    <Grid Background="{StaticResource BackgroundLightBrush}">
+    </Grid>
+        
+        
+</Window>
